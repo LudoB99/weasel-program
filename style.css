@@ -290,6 +290,26 @@ input[type="range"] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 
 canvas { width: 100%; display: block; border-radius: 4px; }
 
+/* ── Footer ─────────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 24px 0 8px;
+  font-size: .78rem;
+  color: var(--muted);
+}
+
+footer a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color .15s, border-color .15s;
+}
+
+footer a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
 /* ── Scrollbar styling ───────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
