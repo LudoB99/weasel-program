@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weasel Program</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Weasel Program</h1>
+      <p class="subtitle">Richard Dawkins' evolutionary simulation from <em>The Blind Watchmaker</em> (1986)</p>
+    </header>
+
+    <section class="config-panel">
+      <div class="config-row">
+        <label for="target-input">Target string</label>
+        <input id="target-input" type="text" value="METHINKS IT IS LIKE A WEASEL" placeholder="METHINKS IT IS LIKE A WEASEL" ="60" spellcheck="false" />
+      </div>
+      <div class="config-row">
+        <label for="population-input">Population size</label>
+        <input id="population-input" type="number" value="100" min="2" max="1000" />
+      </div>
+      <div class="config-row">
+        <label for="mutation-input">Mutation rate (%)</label>
+        <input id="mutation-input" type="number" value="5" min="1" max="50" step="0.5" />
+      </div>
+      <div class="config-row">
+        <label for="speed-input">Speed</label>
+        <div class="speed-row">
+          <span class="speed-label">Slow</span>
+          <input id="speed-input" type="range" min="0" max="5" step="1" value="3" />
+          <span class="speed-label">Fast</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage">
+      <div class="string-labels">
+        <span>Current best</span>
+        <span>Target</span>
+      </div>
+      <div id="current-display" class="string-display" aria-label="Current best string"></div>
+      <div id="target-display" class="string-display target" aria-label="Target string"></div>
+    </section>
+
+    <section class="stats-bar">
+      <div class="stat">
+        <span class="stat-label">Generation</span>
+        <span id="gen-count" class="stat-value">0</span>
+      </div>
+      <div class="stat progress-stat">
+        <span class="stat-label">Fitness</span>
+        <div class="progress-wrap">
+          <div id="fitness-bar" class="progress-bar"></div>
+        </div>
+        <span id="fitness-label" class="stat-value">0 / 0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Status</span>
+        <span id="status-label" class="stat-value">Ready</span>
+      </div>
+    </section>
+
+    <section class="controls">
+      <button id="btn-play" class="btn btn-primary">Play</button>
+      <button id="btn-step" class="btn">Step</button>
+      <button id="btn-reset" class="btn">Reset</button>
+    </section>
+
+    <section class="population-view" id="population-view" aria-live="polite">
+      <h2>Last generation — population sample <span id="pop-count-label"></span></h2>
+      <div id="population-grid" class="population-grid"></div>
+    </section>
+
+    <section class="history-panel">
+      <h2>History</h2>
+      <div id="history-log" class="history-log"></div>
+    </section>
+
+    <section class="chart-section">
+      <h2>Fitness over time</h2>
+      <canvas id="fitness-chart" height="120"></canvas>
+    </section>
+  </div>
+
+  <script src="weasel.js"></script>
+</body>
+</html>
