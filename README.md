@@ -1,5 +1,7 @@
 # Weasel Program
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4d6868f8-93fe-4bca-aa12-4041f44e7276/deploy-status)](https://app.netlify.com/projects/marvelous-rabanadas-66e214/deploys)
+
 An interactive browser-based simulation of Richard Dawkins' Weasel Program, originally described in *The Blind Watchmaker* (1986).
 
 ## What it demonstrates
