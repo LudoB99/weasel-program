@@ -2,6 +2,16 @@
 
 const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
 
+const LIMITS = {
+  targetMinLen:  1,
+  targetMaxLen:  60,
+  popMin:        2,
+  popMax:        1000,
+  mutMin:        1,
+  mutMax:        50,
+  maxGenerations: 50000,
+};
+
 // Speed index → milliseconds delay between generations
 const SPEED_MAP = [800, 400, 160, 60, 16, 0];
 
@@ -63,9 +73,13 @@ function mutate(str, rate) {
   ).join("");
 }
 
+function clamp(val, min, max) {
+  return Math.min(max, Math.max(min, val));
+}
+
 function evolveOneGeneration() {
-  const popSize    = Math.max(2, parseInt(populationInput.value) || 100);
-  const mutRate    = (parseFloat(mutationInput.value) || 5) / 100;
+  const popSize = clamp(parseInt(populationInput.value) || 100, LIMITS.popMin, LIMITS.popMax);
+  const mutRate = clamp(parseFloat(mutationInput.value) || 5, LIMITS.mutMin, LIMITS.mutMax) / 100;
 
   const children   = Array.from({ length: popSize }, () => mutate(current, mutRate));
   const scored     = children.map(c => ({ str: c, score: fitness(c) }));
@@ -302,6 +316,13 @@ function step() {
     return;
   }
 
+  if (generation >= LIMITS.maxGenerations) {
+    complete = true;
+    stop();
+    statusLabel.textContent = `Stopped — generation limit (${LIMITS.maxGenerations.toLocaleString()}) reached`;
+    return;
+  }
+
   statusLabel.textContent = "Running…";
 }
 
@@ -331,16 +352,22 @@ function batchTick() {
   renderStats();
   drawChart();
 
-  if (!complete) {
-    const score = fitness(current);
-    if (score === target.length) {
-      complete = true;
-      stop();
-      statusLabel.textContent = `Done in ${generation.toLocaleString()} generations`;
-      addHistoryEntry();
-      renderPopulation([]);
-      return;
-    }
+  const score = fitness(current);
+  if (score === target.length) {
+    complete = true;
+    stop();
+    statusLabel.textContent = `Done in ${generation.toLocaleString()} generations`;
+    addHistoryEntry();
+    renderPopulation([]);
+    return;
+  }
+
+  if (generation >= LIMITS.maxGenerations) {
+    complete = true;
+    stop();
+    statusLabel.textContent = `Stopped — generation limit (${LIMITS.maxGenerations.toLocaleString()}) reached`;
+    addHistoryEntry();
+    return;
   }
 
   if (running) timerId = requestAnimationFrame(batchTick);
@@ -375,8 +402,22 @@ function stop() {
 
 function reset() {
   stop();
-  target         = targetInput.value.toUpperCase().replace(/[^A-Z ]/g, "");
+  target = targetInput.value.toUpperCase().replace(/[^A-Z ]/g, "").slice(0, LIMITS.targetMaxLen);
   targetInput.value = target;
+
+  if (target.trim().length === 0) {
+    statusLabel.textContent = "Enter a target string to start";
+    btnPlay.disabled = true;
+    btnStep.disabled = true;
+    currentDisplay.innerHTML = "";
+    targetDisplay.innerHTML  = "";
+    populationGrid.innerHTML = "";
+    historyLog.innerHTML     = "";
+    fitnessHistory = [];
+    drawChart();
+    return;
+  }
+
   current        = randomString(target.length);
   generation     = 0;
   complete       = false;
