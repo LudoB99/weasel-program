@@ -38,6 +38,34 @@ header { text-align: center; }
 header h1 { font-size: 2rem; letter-spacing: -.5px; }
 .subtitle { color: var(--muted); margin-top: 4px; font-size: .9rem; }
 
+/* ── GitHub link ────────────────────────────────────────────── */
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: .82rem;
+  text-decoration: none;
+  transition: color .15s, border-color .15s, background .15s;
+}
+
+.github-link:hover {
+  color: var(--text);
+  border-color: var(--text);
+  background: var(--surface);
+}
+
+.github-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
 /* ── Config panel ───────────────────────────────────────────── */
 .config-panel {
   background: var(--surface);
